@@ -158,39 +158,57 @@ Author URL: http://w3layouts.com
             <div class="col-lg-8">
               <h3 class="title-big">Send us a Message</h3>
               <p class="mb-4 mt-lg-0 mt-2">Your email address will not be published. Required fields are marked *</p>
-              <form action="https://formspree.io/f/xqaelzpb"
-                    method="post"
-                    class="text-right">
-                <div class="form-grid">
-                  <input type="text"
-                         name="w3lName"
-                         id="w3lName"
-                         placeholder="Name*"
-                         required="">
-                  <input type="email"
-                         name="w3lSender"
-                         id="w3lSender"
-                         placeholder="Email*"
-                         required="">
-                  <input type="text"
-                         name="w3lPhone"
-                         id="w3lPhone"
-                         placeholder="Phone number*"
-                         required="">
-                  <input type="text"
-                         name="w3lSubject"
-                         id="w3lSubject"
-                         placeholder="Subject">
-                </div>
-                <textarea name="w3lMessage"
-                          id="w3lMessage"
-                          placeholder="Message"></textarea>
-                <button type="submit"
-                        class="btn btn-primary btn-style mt-3">Send Message</button>
-		      <div id="success-message" style="display: none;">
-    <p>Thank you! Your message has been sent successfully.</p>
-  </div>
-              </form>
+            <form id="contact-form" action="https://formspree.io/f/xqaelzpb" method="POST" class="text-right">
+    <div class="form-grid">
+        <input type="text" name="Name" id="Name" placeholder="Name*" required>
+        <input type="email" name="Sender" id="Sender" placeholder="Email*" required>
+        <input type="text" name="Phone" id="Phone" placeholder="Phone number*" required>
+        <input type="text" name="Subject" id="Subject" placeholder="Subject">
+    </div>
+    <textarea name="Message" id="Message" placeholder="Message"></textarea>
+    <button type="submit" class="btn btn-primary btn-style mt-3">Send Message</button>
+
+    <!-- Hidden Success Message (will show after form submission) -->
+    <div id="success-message" style="display: none;">
+        <p>Thank you! Your message has been sent successfully.</p>
+    </div>
+</form>
+
+<script>
+  // Wait for the DOM to be fully loaded before running the script
+  document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById('contact-form');
+    const successMessage = document.getElementById('success-message');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();  // Prevent the form from submitting the normal way
+
+      const formData = new FormData(form);  // Collect the form data
+
+      // Send the form data using the Fetch API to Formspree
+      fetch(form.action, {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => {
+        if (response.ok) {
+          // If the submission is successful, show the success message
+          successMessage.style.display = 'block';
+          form.reset();  // Optionally reset the form fields after submission
+        } else {
+          // If there was an issue with the submission, you can show an error
+          alert("There was an error submitting the form. Please try again.");
+        }
+      })
+      .catch(error => {
+        // If a network error occurs, show an error message
+        console.error('Error:', error);
+        alert("There was an error submitting the form. Please try again.");
+      });
+    });
+  });
+</script>
+
             </div>
             <div class="col-lg-4 cont-details">
               <address>
