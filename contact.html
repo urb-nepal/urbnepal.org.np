@@ -162,7 +162,7 @@ Author URL: http://w3layouts.com
   <div class="form-grid">
     <input type="text" name="Name" id="Name" placeholder="Name*" required>
     <input type="email" name="Sender" id="Sender" placeholder="Email*" required>
-    <input type="text" name="Phone" id="Phone" placeholder="Phone number*" required>
+    <input type="text" name="Phone" id="Phone" placeholder="Phone number*" required pattern="^\d{10,}$" title="Please enter a valid phone number with at least 10 digits">
     <input type="text" name="Subject" id="Subject" placeholder="Subject">
   </div>
   <textarea name="Message" id="Message" placeholder="Message"></textarea>
