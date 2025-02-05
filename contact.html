@@ -157,7 +157,7 @@ Author URL: http://w3layouts.com
                     <div class="col-lg-8">
                         <h3 class="title-big">Send us a Message</h3>
                         <p class="mb-4 mt-lg-0 mt-2">Your email address will not be published. Required fields are marked *</p>
-                        <form id="contact-form" action="https://formspree.io/f/moqkzgkq" method="POST" class="text-right">
+                        <form id="contact-form" action="https://formspree.io/f/xqaelzpb" method="POST" class="text-right">
                             <div class="form-grid">
                                 <input type="text" name="Name" id="Name" placeholder="Name*" required>
                                 <input type="email" name="Sender" id="Sender" placeholder="Email*" required>
@@ -195,48 +195,56 @@ Author URL: http://w3layouts.com
     </div>
 </section>
 
+<!-- Updated Script with DOMContentLoaded -->
 <script>
-    document.getElementById('contact-form').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent form from submitting the traditional way (no redirection)
+    // Ensure the DOM is fully loaded before adding event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if the form exists
+        const form = document.getElementById('contact-form');
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent form from submitting the traditional way (no redirection)
 
-        const form = event.target; // Get the form element
-        const formData = new FormData(form); // Create FormData object with form data
+                const formData = new FormData(form); // Create FormData object with form data
+                const submitButton = form.querySelector('button[type="submit"]'); // Get the submit button
 
-        // Disable the submit button to prevent multiple submissions
-        const submitButton = form.querySelector('button[type="submit"]');
-        submitButton.disabled = true;
+                // Disable the submit button to prevent multiple submissions
+                submitButton.disabled = true;
+                submitButton.innerText = 'Sending...';
 
-        // Show loading message if necessary
-        submitButton.innerText = 'Sending...';
+                // Send the form data to Formspree using Fetch API
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Show success message
+                        document.getElementById('success-message').style.display = 'block';
+                        form.reset(); // Reset form fields
 
-        // Send the form data to Formspree using Fetch API
-        fetch(form.action, {
-            method: 'POST',
-            body: formData,
-        })
-        .then(response => {
-            if (response.ok) {
-                // Show success message
-                document.getElementById('success-message').style.display = 'block';
-                form.reset(); // Reset form fields
+                        // Reset the submit button
+                        submitButton.innerText = 'Send Message';
+                        submitButton.disabled = false;
+                    } else {
+                        throw new Error('Form submission failed.');
+                    }
+                })
+                .catch(error => {
+                    // Show error message if there is an issue with submission
+                    document.getElementById('error-message').style.display = 'block';
 
-                // Hide the submit button text and enable it again
-                submitButton.innerText = 'Send Message';
-                submitButton.disabled = false;
-            } else {
-                throw new Error('Form submission failed.');
-            }
-        })
-        .catch(error => {
-            // Show error message if there is an issue with submission
-            document.getElementById('error-message').style.display = 'block';
-
-            // Hide the submit button text and enable it again
-            submitButton.innerText = 'Send Message';
-            submitButton.disabled = false;
-        });
+                    // Reset the submit button
+                    submitButton.innerText = 'Send Message';
+                    submitButton.disabled = false;
+                });
+            });
+        } else {
+            console.error('Form not found!');
+        }
     });
 </script>
+
 
   <!-- //contacts -->
   <div class="map">
